@@ -9,12 +9,13 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+# override in settings_post.py
 DATABASES = {
     'default':{
-        'NAME':'goobo',
+        'NAME':'abc',
         'ENGINE':'django.db.backends.mysql',
-        'USER':'goobo',
-        'PASSWORD':'goobo',
+        'USER':'abc',
+        'PASSWORD':'abc',
         'HOST':'',
         'PORT':''
         }
@@ -147,3 +148,6 @@ LOGGING = {
         },
     }
 }
+
+from settings_post import *
+
