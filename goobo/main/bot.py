@@ -2,21 +2,15 @@ import sys
 import socket
 import string
 import time
-
+# 
 HOST="irc.freenode.net"
 PORT=6667
 NICK="GooBo"
-#NICK_NAME_LIST=["GooBo", "GuaiWa", "GuoGuo", "GuoPing"]
 IDENT="UserName"
 CHANNEL = "jamie-test"
 REALNAME="getRealName "
-readbuffer=""
 
 s=socket.socket( )
-s.connect((HOST, PORT))
-s.send("NICK %s\r\n" % NICK)
-s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))
-
 GREETING_MESSAGE = "Hey, my name is GooBo, powered by eytoss, igonor me will be your best choice but if you don't, you will be surprised."
 
 def _get_typed_message(message):
@@ -67,25 +61,45 @@ SERVICE_TUPLE_LIST = (
                       ("GH", generate_GH_url, ""),
                      )
 
-s.send ( 'JOIN #%s\r\n' % CHANNEL) # YOU MUST CHANGE THE CHANNEL HERE AND BELOW!!
-s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, GREETING_MESSAGE))
+is_stop = False
+def start_goobo():
+    """
+    Start GooBo
+    """
+    s.connect((HOST, PORT))
+    s.send("NICK %s\r\n" % NICK)
+    s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))    
 
-repeat_message(GREETING_MESSAGE)
-
-while True:
-    readbuffer=readbuffer+s.recv(1024)
-    temp=string.split(readbuffer, "\n")
-    readbuffer=temp.pop( )
+    s.send ( 'JOIN #%s\r\n' % CHANNEL) # YOU MUST CHANGE THE CHANNEL HERE AND BELOW!!
+    s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, GREETING_MESSAGE))
     
-    for line in temp:
-        print line
-        message = _get_typed_message(line)
-        if message == "PING":
-            s.send("PONG %s\r\n" % line[1])
-        elif message == "goobo":
-            s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, "YES Sir! Check out my service list: goobo help"))
-        elif message.startswith("goobo"):
-            for service in SERVICE_TUPLE_LIST:
-                command, function, parameter = service
-                if message.split()[1] == command:
-                    function(parameter if parameter else message.split()[2])
+    repeat_message(GREETING_MESSAGE)
+    
+    readbuffer=""
+    while not is_stop:
+        readbuffer=readbuffer+s.recv(1024)
+        temp=string.split(readbuffer, "\n")
+        readbuffer=temp.pop( )
+        
+        for line in temp:
+            print line
+            message = _get_typed_message(line)
+            if message.startswith("PING"):
+                s.send("PONG %s\r\n" % line[1])
+            elif message == "GooBo:":
+                s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, "YES Sir! Check out my service list: GooBo: help"))
+            elif message.startswith("GooBo:"):
+                for service in SERVICE_TUPLE_LIST:
+                    command, function, parameter = service
+                    if message.split()[1] == command:
+                        function(parameter if parameter else message.split()[2])
+
+def stop_goobo():
+    """
+    Stop GooBo
+    """
+    is_stop = True
+
+if __name__ == "__main__":
+    start_goobo()
+
