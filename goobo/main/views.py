@@ -3,6 +3,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from main import bot
 
 def goobo_control_panel(request):
     """
@@ -13,4 +14,11 @@ def goobo_control_panel(request):
                                },
                               context_instance=RequestContext(request))
 
+
+def goobo_start(request):
+    """
+        start GooBo!!!
+    """
+    bot.start_goobo()
+    return HttpResponse("abcde")
 

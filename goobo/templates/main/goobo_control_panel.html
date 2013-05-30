@@ -2,8 +2,25 @@
 <html>
   <head>
     <title>Page title</title>
-  </head>
+    <script type="text/javascript" src="../static/js/jquery-1.7.2.js"></script>
+	<script type="text/javascript">
+		function start_goobo(){
+            $.ajax({
+                url: "/goobo/start/",
+                type:"GET",
+                data:{start: "start"},
+                cache:false,
+                success:function(response){
+                    alert(response);
+                },
+                error:function(xhr,status,err){
+                    alert(status);
+                }
+            });
+		}
+	</script>  
+</head>
   <body>
-    YES!
+    <a onclick="start_goobo();">Start GooBo</a>
   </body>
 </html>
