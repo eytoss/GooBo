@@ -93,7 +93,7 @@ def start_goobo():
             message = _get_typed_message(line)
             if message == "GooBo:":
                 s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, "YES Sir! Check out my service list: GooBo: help"))
-            elif message == "GooBo: quit":
+            elif message == "GooBo: !quit":
                 s.close()
                 stop_goobo = True
                 break
