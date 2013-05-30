@@ -10,8 +10,10 @@ IDENT="UserName"
 CHANNEL = "jamie-test"
 REALNAME="getRealName "
 
-s=socket.socket( )
+
 GREETING_MESSAGE = "Hey, my name is GooBo, powered by eytoss, igonor me will be your best choice but if you don't, you will be surprised."
+# global socket variable
+s = None
 
 def _get_typed_message(message):
     """
@@ -61,11 +63,16 @@ SERVICE_TUPLE_LIST = (
                       ("GH", generate_GH_url, ""),
                      )
 
-is_stop = False
+stop_goobo = False
 def start_goobo():
     """
     Start GooBo
     """
+    global s 
+    global stop_goobo 
+    s = socket.socket( )
+    stop_goobo = False
+
     s.connect((HOST, PORT))
     s.send("NICK %s\r\n" % NICK)
     s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))    
@@ -76,7 +83,7 @@ def start_goobo():
     repeat_message(GREETING_MESSAGE)
     
     readbuffer=""
-    while not is_stop:
+    while not stop_goobo:
         readbuffer=readbuffer+s.recv(1024)
         temp=string.split(readbuffer, "\n")
         readbuffer=temp.pop( )
@@ -86,8 +93,9 @@ def start_goobo():
             message = _get_typed_message(line)
             if message == "GooBo:":
                 s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, "YES Sir! Check out my service list: GooBo: help"))
-            elif message == "GooBo: quit":
+            elif message == "GooBo: !quit":
                 s.close()
+                stop_goobo = True
                 break
             elif message.startswith("GooBo:"):
                 for service in SERVICE_TUPLE_LIST:
@@ -99,7 +107,8 @@ def stop_goobo():
     """
     Stop GooBo
     """
-    is_stop = True
+    global stop_goobo
+    stop_goobo = True
 
 if __name__ == "__main__":
     start_goobo()
