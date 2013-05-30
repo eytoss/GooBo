@@ -84,10 +84,11 @@ def start_goobo():
         for line in temp:
             print line
             message = _get_typed_message(line)
-            if message.startswith("PING"):
-                s.send("PONG %s\r\n" % line[1])
-            elif message == "GooBo:":
+            if message == "GooBo:":
                 s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, "YES Sir! Check out my service list: GooBo: help"))
+            elif message == "GooBo: quit":
+                s.close()
+                break
             elif message.startswith("GooBo:"):
                 for service in SERVICE_TUPLE_LIST:
                     command, function, parameter = service
