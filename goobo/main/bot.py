@@ -1,16 +1,7 @@
 import socket
 import string
 from django.conf import settings
-# 
-HOST="irc.freenode.net"
-PORT=6667
-NICK="GooBo"
-IDENT="UserName"
-CHANNEL = "jamie-test"
-REALNAME="getRealName "
 
-
-GREETING_MESSAGE = "Hey, my name is GooBo, powered by eytoss, igonor me will be your best choice but if you don't, you will be surprised."
 # global socket variable
 s = None
 
@@ -38,21 +29,21 @@ def _parse_command(message):
 def generate_GH_url(issue_id):
     """"""
     message = "https://github.com/DramaFever/www/issues/{}".format(issue_id)
-    s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, message))
+    s.send ( 'PRIVMSG #%s :%s\r\n' % (settings.CHANNEL, message))
 
 def send_message(message):
     """
         This is the basic function of sending a one line message to IRC
     """
-    s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, message))
+    s.send ( 'PRIVMSG #%s :%s\r\n' % (settings.CHANNEL, message))
     
 def repeat_message(message=None, repeat_time=3, interval=0, start_immediately=True):
     """"""
     if not message:
-        s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, "You did not specify what to repeat, so I will just repeat my favorite quote:"))
+        s.send ( 'PRIVMSG #%s :%s\r\n' % (settings.CHANNEL, "You did not specify what to repeat, so I will just repeat my favorite quote:"))
         message = "Who dares wins"
     for i in range(0, repeat_time):
-        s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, message))
+        s.send ( 'PRIVMSG #%s :%s\r\n' % (settings.CHANNEL, message))
 
 # service list. Before DB is introduced here.
 SERVICE_TUPLE_LIST = (
@@ -72,18 +63,18 @@ def start_goobo():
     s = socket.socket( )
     stop_goobo = False
 
-    s.connect((HOST, PORT))
+    s.connect((settings.HOST, settings.PORT))
     
     # MUST send NICK and USER commands before any other commands 
-    s.send("NICK %s\r\n" % NICK)
-    s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))    
+    s.send("NICK %s\r\n" % settings.NICK)
+    s.send("USER %s %s bla :%s\r\n" % (settings.IDENT, settings.HOST, settings.REALNAME))    
 
     #identify nickname
-    s.send("NICKSERV IDENTIFY {nick} {password}\r\n".format(nick=NICK, password=settings.FREENODE_NICKNAME_PASSWORD))
+    s.send("NICKSERV IDENTIFY {nick} {password}\r\n".format(nick=settings.NICK, password=settings.FREENODE_NICKNAME_PASSWORD))
 
-    #join the channel and say hello!
-    s.send ( 'JOIN #%s\r\n' % CHANNEL) # YOU MUST CHANGE THE CHANNEL HERE AND BELOW!!
-    s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, GREETING_MESSAGE))
+    #join the CHANNEL and say hello!
+    s.send ( 'JOIN #%s\r\n' % settings.CHANNEL) # YOU MUST CHANGE THE CHANNEL HERE AND BELOW!!
+    s.send ( 'PRIVMSG #%s :%s\r\n' % (settings.CHANNEL, settings.GREETING_MESSAGE))
         
     readbuffer=""
     while not stop_goobo:
@@ -95,7 +86,7 @@ def start_goobo():
             print line
             message = _get_typed_message(line)
             if message == "GooBo:":
-                s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, "YES Sir! Check out my service list: GooBo: help"))
+                s.send ( 'PRIVMSG #%s :%s\r\n' % (settings.CHANNEL, "YES Sir! Check out my service list: GooBo: help"))
             elif message == "GooBo: !quit":
                 s.close()
                 stop_goobo = True
