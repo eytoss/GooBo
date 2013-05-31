@@ -1,7 +1,6 @@
-import sys
 import socket
 import string
-import time
+from django.conf import settings
 # 
 HOST="irc.freenode.net"
 PORT=6667
@@ -74,14 +73,18 @@ def start_goobo():
     stop_goobo = False
 
     s.connect((HOST, PORT))
+    
+    # MUST send NICK and USER commands before any other commands 
     s.send("NICK %s\r\n" % NICK)
     s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))    
 
+    #identify nickname
+    s.send("NICKSERV IDENTIFY {} {}\r\n".format(NICK, settings.FREENODE_NICKNAME_PASSWORD))
+
+    #join the channel and say hello!
     s.send ( 'JOIN #%s\r\n' % CHANNEL) # YOU MUST CHANGE THE CHANNEL HERE AND BELOW!!
     s.send ( 'PRIVMSG #%s :%s\r\n' % (CHANNEL, GREETING_MESSAGE))
-    
-    repeat_message(GREETING_MESSAGE)
-    
+        
     readbuffer=""
     while not stop_goobo:
         readbuffer=readbuffer+s.recv(1024)
