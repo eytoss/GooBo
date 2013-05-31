@@ -79,7 +79,7 @@ def start_goobo():
     s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))    
 
     #identify nickname
-    s.send("NICKSERV IDENTIFY {} {}\r\n".format(NICK, settings.FREENODE_NICKNAME_PASSWORD))
+    s.send("NICKSERV IDENTIFY {nick} {password}\r\n".format(nick=NICK, password=settings.FREENODE_NICKNAME_PASSWORD))
 
     #join the channel and say hello!
     s.send ( 'JOIN #%s\r\n' % CHANNEL) # YOU MUST CHANGE THE CHANNEL HERE AND BELOW!!
