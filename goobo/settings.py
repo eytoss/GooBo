@@ -153,7 +153,18 @@ LOGGING = {
 }
 
 # GooBo
-FREENODE_NICKNAME_PASSWORD = "ASDFQWER"
+HOST="irc.freenode.net"
+PORT=6667
+
+NICK="GooBo"
+IDENT="UserName"
+REALNAME="getRealName "
+FREENODE_NICKNAME_PASSWORD = "set in settings_post.py"
+
+CHANNEL_LIST = ["jamie-test", "goobo"]
+
+GREETING_MESSAGE = "Hey, my name is GooBo, powered by eytoss, igonor me will be your best choice but if you don't, you will be surprised."
+QUIT_COMMAND = "!quit"
 
 from settings_post import *
 
