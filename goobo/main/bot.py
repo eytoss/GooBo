@@ -103,7 +103,6 @@ def start_goobo():
 
     # keep listening and acting to commands until receiving QUIT_COMMAND
     readbuffer=""
-    quit_command = "GooBo: {}".format(settings.QUIT_COMMAND)
     while not stop_goobo:
         readbuffer=readbuffer+s.recv(1024)
         temp=string.split(readbuffer, "\n")
@@ -112,20 +111,25 @@ def start_goobo():
         for line in temp:
             print line
             channel, message = _get_message_info(line)
-            if message == "GooBo:":
+
+            if not message.startswith("GooBo:"):
+                break
+            command_str = message.replace("GooBo:", "", 1)
+            command_parts = command_str.split()
+            if not command_parts:
                 send_channel_message(channel, "YES Sir! Check out my service list: GooBo: help")
-            elif message == quit_command:
+                break      
+            if command_parts[0] == settings.QUIT_COMMAND:
                 _quit_goobo(channel)
                 stop_goobo = True
                 break
-            elif message.startswith("GooBo:"):
-                try:
-                    for service in SERVICE_TUPLE_LIST:
-                        command, function, parameter = service
-                        if message.split()[1] == command:
-                            function(channel, parameter if parameter else message.split()[2])
-                except:
-                    pass
+            try:
+                for service in SERVICE_TUPLE_LIST:
+                    command, function, parameter = service
+                    if command_parts[0] == command:
+                        function(channel, parameter if parameter else command_parts[1])
+            except:
+                pass
             
     _tear_down_goobo()
 
