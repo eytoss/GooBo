@@ -84,6 +84,7 @@ def _quit_goobo(channel):
     send_channel_message(channel, "Who dare to kill me?")
     time.sleep(2)
     send_channel_message(channel, "Well, who dares wins.")
+    time.sleep(1)
     s.close()
 
 def _tear_down_goobo():
