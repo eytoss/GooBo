@@ -93,6 +93,14 @@ def _tear_down_goobo():
     """
     pass
             
+def _keyword_react(channel, message):
+    """
+        react upon listened any keywords in LISTEN_KEYWORDS
+    """
+    for keyword in settings.LISTEN_KEYWORDS:
+        if keyword in message:
+            send_channel_message(channel, "What's up!")
+    
 stop_goobo = False
 def start_goobo():
     """
@@ -113,6 +121,7 @@ def start_goobo():
             channel, message = _get_message_info(line)
 
             if not message.startswith("GooBo:"):
+                _keyword_react(channel, message)
                 break
             command_str = message.replace("GooBo:", "", 1)
             command_parts = command_str.split()
