@@ -152,5 +152,8 @@ LOGGING = {
     }
 }
 
+# GooBo
+FREENODE_NICKNAME_PASSWORD = "ASDFQWER"
+
 from settings_post import *
 
