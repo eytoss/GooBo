@@ -134,28 +134,31 @@ def start_goobo():
             # for now, GooBo only reacts on private messages(could from channel or other users)
             if command != "PRIVMSG":
                 break
+
+            if _is_channel(recipient) and not message.startswith("GooBo:"):
+                _keyword_react(recipient, message)
+                break
+
+            # channel message started with GooBo: or private message to GooBo.
+            reply_to = sender
             if _is_channel(recipient): # channel message need to reply to receipt normally
-                if not message.startswith("GooBo:"):
-                    _keyword_react(recipient, message)
-                    break
-                command_str = message.replace("GooBo:", "", 1)
-                command_parts = command_str.split()
-                if not command_parts:
-                    send_message(recipient, "YES Sir! Check out my service list: GooBo: help")
-                    break      
-                if command_parts[0] == settings.QUIT_COMMAND:
-                    _quit_goobo(recipient)
-                    stop_goobo = True
-                    break
-                try:
-                    for service in SERVICE_TUPLE_LIST:
-                        command, function, parameter = service
-                        if command_parts[0] == command:
-                            function(recipient, parameter if parameter else command_parts[1])
-                except:
-                    pass
-            else: # private message need to reply to sender
-                send_message(sender, message)
+                reply_to = recipient
+            # NOTE: GooBo: is not necessary prefix as private message
+            command_str = message.replace("GooBo:", "", 1)
+            command_parts = command_str.split()
+            if not command_parts:
+                send_message(reply_to, "YES Sir! Check out my service list: GooBo: help")
+                break      
+            if command_parts[0] == settings.QUIT_COMMAND:
+                _quit_goobo(reply_to)
+                stop_goobo = True
+                break
+            try:
+                for service in SERVICE_TUPLE_LIST:
+                    command, function, parameter = service
+                    if command_parts[0] == command:
+                        function(reply_to, parameter if parameter else command_parts[1])
+            except:
                 pass
             
     _tear_down_goobo()
