@@ -80,7 +80,6 @@ def _set_up_goobo():
     #join the CHANNELs and say hello!
     for channel in settings.CHANNEL_LIST:
         s.send ( 'JOIN #%s\r\n' % channel) # YOU MUST CHANGE THE CHANNEL HERE AND BELOW!!
-        s.send ( 'PRIVMSG #%s :%s\r\n' % (channel, settings.GREETING_MESSAGE))
 
 def _quit_goobo(channel):
     """
