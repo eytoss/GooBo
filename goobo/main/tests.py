@@ -20,9 +20,17 @@ class GooBoTest(TestCase):
         """
         Tests that _get_message_info is working
         """
-        raw_message = ":jjaammiiee!~jjaammiie@c-76-124-176-27.hsd1.nj.comcast.net PRIVMSG #jamie-test :GooBo: help!"
-        channel_name, real_message = bot._get_message_info(raw_message)
-        self.assertEqual(channel_name, "jamie-test", "parse raw message does not get right channel name")
-        self.assertEqual(real_message, "GooBo: help!", "parse raw message does not get right real message")
+        # channel message
+        raw_channel_message = ":jjaammiiee!~jjaammiie@c-76-124-176-27.hsd1.nj.comcast.net PRIVMSG #jamie-test :GooBo: help!"
+        sender, recipient, message = bot._get_message_info(raw_channel_message)
+        self.assertEqual(sender, "jjaammiiee", "parse raw message does not get right sender")
+        self.assertEqual(recipient, "#jamie-test", "parse raw message does not get right recipient")
+        self.assertEqual(message, "GooBo: help!", "parse raw message does not get right message")
+        # private message
+        raw_private_message = ":jjaammiiee!~jjaammiie@c-68-57-16-51.hsd1.pa.comcast.net PRIVMSG GooBo :hello"
+        sender, recipient, message = bot._get_message_info(raw_private_message)
+        self.assertEqual(sender, "jjaammiiee", "parse raw message does not get right sender")
+        self.assertEqual(recipient, "GooBo", "parse raw message does not get right recipient")
+        self.assertEqual(message, "hello", "parse raw message does not get right message")
 
 
