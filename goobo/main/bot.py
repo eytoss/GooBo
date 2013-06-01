@@ -127,7 +127,6 @@ def start_goobo():
         for line in temp:
             print line
             sender, recipient, message = _get_message_info(line)
-
             if _is_channel(recipient): # channel message need to reply to receipt normally
                 if not message.startswith("GooBo:"):
                     _keyword_react(recipient, message)
@@ -148,11 +147,7 @@ def start_goobo():
                             function(recipient, parameter if parameter else command_parts[1])
                 except:
                     pass
-            else: # private message need to reply to sender
-                if message == "?":
-                    send_message(sender, "??")
-                else:
-                    send_message(sender, message)
+            else: # private or system message need to reply to sender NOTE: never send_message w/o any checking, or you will be trapped in infinite loop!
                 pass
             
     _tear_down_goobo()
