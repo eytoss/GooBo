@@ -37,10 +37,12 @@ def generate_GH_url(issue_id, repo="www"):
     """"""
     return "https://github.com/DramaFever/{repo}/issues/{issue_id}".format(issue_id=issue_id, repo=repo)
 
+
 def send_message(recipient, message):
     """
         This is the basic function of sending a one line message to a channel in IRC
     """
+    time.sleep(settings.MESSAGE_DELAY_TIME)
     s.send ( 'PRIVMSG %s :%s\r\n' % (recipient, message))
     
 def repeat_message(channel, message=None, repeat_time=3, interval=0, start_immediately=True):
@@ -77,10 +79,11 @@ def _set_up_goobo():
     #identify nickname
     s.send("NICKSERV IDENTIFY {nick} {password}\r\n".format(nick=settings.NICK, password=settings.FREENODE_NICKNAME_PASSWORD))
 
-    #join the CHANNELs and say hello!
+    #join the CHANNELs
     for channel in settings.CHANNEL_LIST:
+        time.sleep(1)
         s.send ( 'JOIN #%s\r\n' % channel) # YOU MUST CHANGE THE CHANNEL HERE AND BELOW!!
-
+        
 def _quit_goobo(channel):
     """
         quit goobo
