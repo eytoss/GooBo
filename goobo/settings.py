@@ -165,6 +165,7 @@ CHANNEL_LIST = ["jamie-test", "goobo"]
 
 GREETING_MESSAGE = "Hey, my name is GooBo, powered by eytoss, igonor me will be your best choice but if you don't, you will be surprised."
 LISTEN_KEYWORDS = ["you", "never", "know"]
+AUTO_REPLY_KEYWORDS = ["keep", "guessing"]
 QUIT_COMMAND = "!quit"
 
 from settings_post import *
