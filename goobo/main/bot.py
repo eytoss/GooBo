@@ -37,11 +37,11 @@ def generate_GH_url(issue_id, repo="www"):
     """"""
     return "https://github.com/DramaFever/{repo}/issues/{issue_id}".format(issue_id=issue_id, repo=repo)
 
-def send_message(channel, message):
+def send_message(recipient, message):
     """
         This is the basic function of sending a one line message to a channel in IRC
     """
-    s.send ( 'PRIVMSG #%s :%s\r\n' % (channel, message))
+    s.send ( 'PRIVMSG %s :%s\r\n' % (recipient, message))
     
 def repeat_message(channel, message=None, repeat_time=3, interval=0, start_immediately=True):
     """"""
