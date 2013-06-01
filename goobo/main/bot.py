@@ -37,11 +37,13 @@ def generate_GH_url(issue_id, repo="www"):
     """"""
     return "https://github.com/DramaFever/{repo}/issues/{issue_id}".format(issue_id=issue_id, repo=repo)
 
-def send_message(channel, message):
+
+def send_message(recipient, message):
     """
         This is the basic function of sending a one line message to a channel in IRC
     """
-    s.send ( 'PRIVMSG #%s :%s\r\n' % (channel, message))
+    time.sleep(settings.MESSAGE_DELAY_TIME)
+    s.send ( 'PRIVMSG %s :%s\r\n' % (recipient, message))
     
 def repeat_message(channel, message=None, repeat_time=3, interval=0, start_immediately=True):
     """"""
@@ -77,10 +79,11 @@ def _set_up_goobo():
     #identify nickname
     s.send("NICKSERV IDENTIFY {nick} {password}\r\n".format(nick=settings.NICK, password=settings.FREENODE_NICKNAME_PASSWORD))
 
-    #join the CHANNELs and say hello!
+    #join the CHANNELs
     for channel in settings.CHANNEL_LIST:
+        time.sleep(1)
         s.send ( 'JOIN #%s\r\n' % channel) # YOU MUST CHANGE THE CHANNEL HERE AND BELOW!!
-
+        
 def _quit_goobo(channel):
     """
         quit goobo
@@ -127,7 +130,6 @@ def start_goobo():
         for line in temp:
             print line
             sender, recipient, message = _get_message_info(line)
-
             if _is_channel(recipient): # channel message need to reply to receipt normally
                 if not message.startswith("GooBo:"):
                     _keyword_react(recipient, message)
@@ -148,11 +150,7 @@ def start_goobo():
                             function(recipient, parameter if parameter else command_parts[1])
                 except:
                     pass
-            else: # private message need to reply to sender
-                if message == "?":
-                    send_message(sender, "??")
-                else:
-                    send_message(sender, message)
+            else: # private or system message need to reply to sender NOTE: never send_message w/o any checking, or you will be trapped in infinite loop!
                 pass
             
     _tear_down_goobo()

@@ -166,6 +166,7 @@ CHANNEL_LIST = ["jamie-test", "goobo"]
 LISTEN_KEYWORDS = ["you", "never", "know"]
 AUTO_REPLY_KEYWORDS = ["keep", "guessing"]
 QUIT_COMMAND = "!quit"
+MESSAGE_DELAY_TIME = 0.1
 
 from settings_post import *
 
