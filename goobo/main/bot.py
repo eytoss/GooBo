@@ -133,11 +133,11 @@ def start_goobo():
             sender, command, recipient, message = _get_message_info(line)
             # for now, GooBo only reacts on private messages(could from channel or other users)
             if command != "PRIVMSG":
-                break
+                continue
 
             if _is_channel(recipient) and not message.startswith("GooBo:"):
                 _keyword_react(recipient, message)
-                break
+                continue
 
             # channel message started with GooBo: or private message to GooBo.
             reply_to = sender
@@ -148,7 +148,7 @@ def start_goobo():
             command_parts = command_str.split()
             if not command_parts:
                 send_message(reply_to, "YES Sir! Check out my service list: GooBo: help")
-                break      
+                continue      
             if command_parts[0] == settings.QUIT_COMMAND:
                 _quit_goobo(reply_to)
                 stop_goobo = True
