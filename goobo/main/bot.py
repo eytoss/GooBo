@@ -112,6 +112,14 @@ def _keyword_react(channel, message):
     for keyword in settings.LISTEN_KEYWORDS:
         if keyword in message:
             send_message(channel, "What's up!")
+            
+def _ping_pong(line):
+    """PONG message back upon receiving PING"""
+    #  Ping message sent by server irc.funet.fi example: 
+    #      PING :irc.funet.fi 
+    print line
+    if line.startswith("PING :"):
+        s.send("PONG {}\r\n".format(line.split()[1][1:]))
     
 stop_goobo = False
 def start_goobo():
@@ -129,7 +137,7 @@ def start_goobo():
         readbuffer=temp.pop( )
         
         for line in temp:
-            print line
+            _ping_pong(line)            
             sender, command, recipient, message = _get_message_info(line)
             # for now, GooBo only reacts on private messages(could from channel or other users)
             if command != "PRIVMSG":
