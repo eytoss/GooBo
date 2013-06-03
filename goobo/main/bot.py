@@ -5,6 +5,14 @@ from django.conf import settings
 s = None
 
 def _send_email(reply_to, message):
+    """send email functionality"""
+    _send_email_or_txt(reply_to, message, is_txt=0)
+
+def _send_txt(reply_to, message):
+    """send txt functionality"""
+    _send_email_or_txt(reply_to, message, is_txt=1)
+
+def _send_email_or_txt(reply_to, message, is_txt=1):
     """send_email functionality"""
     # Import smtplib for the actual sending function
     import smtplib    
@@ -13,15 +21,18 @@ def _send_email(reply_to, message):
     # Create a text/plain message
     msg = MIMEText(message)
     
+    destination = settings.EMAIL_TO
+    if is_txt:
+        destination = settings.EMAIL_TO_TXT_GATEWAY
     msg['Subject'] = 'Message from {}'.format(reply_to)
     msg['From'] = settings.EMAIL_FROM
-    msg['To'] = settings.EMAIL_TO
+    msg['To'] = destination
     
     s = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
     # this is needed if you want to do login authentication with gmail
     s.starttls()
     s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-    s.sendmail(settings.EMAIL_FROM, [settings.EMAIL_TO], msg.as_string())
+    s.sendmail(settings.EMAIL_FROM, [destination], msg.as_string())
     s.quit()
 
 def _is_channel(name):
@@ -36,11 +47,14 @@ def _get_message_info(raw_message):
          print _get_message_info(message)
          >>("yournick", "PRIVMSG", "#yournick-test", "goobo help!")
     """
-    parts = raw_message.split()
-    sender = parts[0].split("!")[0][1:]
-    command = parts[1]
-    recipient = parts[2]
-    message = " ".join(parts[3:])[1:]
+    try:
+        parts = raw_message.split()
+        sender = parts[0].split("!")[0][1:]
+        command = parts[1]
+        recipient = parts[2]
+        message = " ".join(parts[3:])[1:]
+    except:
+        return (None, None, None, None)
     return (sender, command, recipient, message)
     
 def _parse_command(message):
@@ -78,6 +92,7 @@ def repeat_message(channel, message=None, repeat_time=3, interval=0, start_immed
 SERVICE_TUPLE_LIST = (
                       ("lunchdoc", send_message, "Narberth Lunch Doc: http://goo.gl/vs8RB"),
                       ("email", _send_email, ""),
+                      ("txt", _send_txt, ""),
                       ("google", send_message, "http://www.google.com"),
                       ("repeat", repeat_message, ""),
                       ("GH", generate_GH_url, ""),
@@ -141,7 +156,9 @@ def _ping_pong(line):
     print line
     if line.startswith("PING :"):
         s.send("PONG {}\r\n".format(line.split()[1][1:]))
-    
+        return True
+    return False
+
 stop_goobo = False
 def start_goobo():
     """
@@ -158,7 +175,8 @@ def start_goobo():
         readbuffer=temp.pop( )
         
         for line in temp:
-            _ping_pong(line)            
+            if _ping_pong(line):
+                continue      
             sender, command, recipient, message = _get_message_info(line)
             # for now, GooBo only reacts on private messages(could from channel or other users)
             if command != "PRIVMSG":
@@ -186,7 +204,7 @@ def start_goobo():
                 for service in SERVICE_TUPLE_LIST:
                     command, function, parameter = service
                     if command_parts[0] == command:
-                        function(reply_to, parameter if parameter else command_parts[1])
+                        function(reply_to, parameter if parameter else command_str.replace(command, "", 1))
             except:
                 pass
             

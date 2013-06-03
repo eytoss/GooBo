@@ -176,6 +176,7 @@ EMAIL_HOST_USER = 'me@gmail.com'
 EMAIL_HOST_PASSWORD = 'password'
 EMAIL_FROM = "you@example.com"
 EMAIL_TO = "me@example.com"
+EMAIL_TO_TXT_GATEWAY = "number@att.net"
 
 from settings_post import *
 
