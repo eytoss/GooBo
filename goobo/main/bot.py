@@ -4,6 +4,26 @@ from django.conf import settings
 # global socket variable
 s = None
 
+def _send_email(reply_to, message):
+    """send_email functionality"""
+    # Import smtplib for the actual sending function
+    import smtplib    
+    # Import the email modules we'll need
+    from email.mime.text import MIMEText
+    # Create a text/plain message
+    msg = MIMEText(message)
+    
+    msg['Subject'] = 'Message from {}'.format(reply_to)
+    msg['From'] = settings.EMAIL_FROM
+    msg['To'] = settings.EMAIL_TO
+    
+    s = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+    # this is needed if you want to do login authentication with gmail
+    s.starttls()
+    s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+    s.sendmail(settings.EMAIL_FROM, [settings.EMAIL_TO], msg.as_string())
+    s.quit()
+
 def _is_channel(name):
     """determine if a name represents a channel"""
     return name.startswith("#")
@@ -57,6 +77,7 @@ def repeat_message(channel, message=None, repeat_time=3, interval=0, start_immed
 # service list. Before DB is introduced here.
 SERVICE_TUPLE_LIST = (
                       ("lunchdoc", send_message, "Narberth Lunch Doc: http://goo.gl/vs8RB"),
+                      ("email", _send_email, ""),
                       ("google", send_message, "http://www.google.com"),
                       ("repeat", repeat_message, ""),
                       ("GH", generate_GH_url, ""),

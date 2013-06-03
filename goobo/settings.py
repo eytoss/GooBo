@@ -168,5 +168,14 @@ AUTO_REPLY_KEYWORDS = ["keep", "guessing"]
 QUIT_COMMAND = "!quit"
 MESSAGE_DELAY_TIME = 0.1
 
+# GooBo email & text
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'me@gmail.com'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_FROM = "you@example.com"
+EMAIL_TO = "me@example.com"
+
 from settings_post import *
 
