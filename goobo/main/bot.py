@@ -189,7 +189,7 @@ def _listen_IRC():
             if command != "PRIVMSG":
                 continue
 
-            if _is_channel(recipient) and not message.startswith("GooBo:"):
+            if _is_channel(recipient) and not message.startswith(settings.COMMAND_PREFIX):
                 _keyword_react(recipient, message)
                 continue
 
@@ -198,10 +198,10 @@ def _listen_IRC():
             if _is_channel(recipient): # channel message need to reply to receipt normally
                 reply_to = recipient
             # NOTE: GooBo: is not necessary prefix as private message
-            command_str = message.replace("GooBo:", "", 1)
+            command_str = message.replace(settings.COMMAND_PREFIX, "", 1)
             command_parts = command_str.split()
             if not command_parts:
-                send_message(reply_to, "YES Sir! Check out my service list: GooBo: help")
+                send_message(reply_to, "YES Sir! Check out my service list: {command_prefix} help".format(command_prefix=settings.COMMAND_PREFIX))
                 continue      
             if command_parts[0] == settings.QUIT_COMMAND:
                 _quit_goobo(reply_to)

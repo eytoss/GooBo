@@ -152,7 +152,7 @@ LOGGING = {
     }
 }
 
-# GooBo
+# GooBo Core
 HOST="irc.freenode.net"
 PORT=6667
 
@@ -165,6 +165,8 @@ CHANNEL_LIST = ["jamie-test", "goobo"]
 
 LISTEN_KEYWORDS = ["you", "never", "know"]
 AUTO_REPLY_KEYWORDS = ["keep", "guessing"]
+# command prefix used to have GooBo's attention!
+COMMAND_PREFIX = "!"
 QUIT_COMMAND = "!quit"
 MESSAGE_DELAY_TIME = 0.1
 
