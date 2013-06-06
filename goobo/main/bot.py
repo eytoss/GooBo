@@ -1,4 +1,4 @@
-import socket, string, time
+import socket, string, time, threading
 from django.conf import settings
 
 # global socket variable
@@ -165,8 +165,18 @@ def start_goobo():
     Start GooBo
     """
     _set_up_goobo()
-    global stop_goobo 
 
+    listen_IRC_thread = threading.Thread(target=_listen_IRC)
+    listen_IRC_thread.start()
+
+    _tear_down_goobo()
+
+
+def _listen_IRC():
+    """
+        make GooBo keep listening on IRC
+    """
+    global stop_goobo 
     # keep listening and acting to commands until receiving QUIT_COMMAND
     readbuffer=""
     while not stop_goobo:
@@ -207,8 +217,7 @@ def start_goobo():
                         function(reply_to, parameter if parameter else command_str.replace(command, "", 1))
             except:
                 pass
-            
-    _tear_down_goobo()
+
 
 def stop_goobo():
     """
