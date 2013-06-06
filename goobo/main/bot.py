@@ -164,18 +164,15 @@ def start_goobo():
     """
     Start GooBo
     """
-    _set_up_goobo()
-
     listen_IRC_thread = threading.Thread(target=_listen_IRC)
     listen_IRC_thread.start()
-
-    _tear_down_goobo()
-
 
 def _listen_IRC():
     """
         make GooBo keep listening on IRC
     """
+    _set_up_goobo()
+
     global stop_goobo 
     # keep listening and acting to commands until receiving QUIT_COMMAND
     readbuffer=""
@@ -218,6 +215,7 @@ def _listen_IRC():
             except:
                 pass
 
+    _tear_down_goobo()
 
 def stop_goobo():
     """
