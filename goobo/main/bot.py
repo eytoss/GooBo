@@ -1,5 +1,6 @@
 import socket, string, time, threading
 from django.conf import settings
+from main.models import Jiyi
 
 # global socket variable
 s = None
@@ -95,10 +96,20 @@ def echo(msg_str):
     msg = msg_str.replace(channel, "", 1)
     send_message(channel, msg)
     
+def hint(reply_to, hint):
+    """given a hint, return the mapping message in Jiyi model"""
+    try:
+        msg = Jiyi.objects.get(hint=hint)
+    except Jiyi.DoesNotExist:
+        send_message(reply_to, "No such hint, you could request '{}' to be added.".format(hint))
+    send_message(reply_to, msg.message)
+
+
 # service list. Before DB is introduced here.
 SERVICE_TUPLE_LIST = (
                       ("lunchdoc", send_message, "Narberth Lunch Doc: http://goo.gl/vs8RB"),
                       ("issuedoc", send_message, "Jamie Xu(eytoss) Issue Doc: http://goo.gl/kgndi"),
+                      ("hint", hint, ""),
                       ("help", send_message, "!txt [msg]    !lunchdoc    !repeat [msg]    !echo [channel|nick] [msg]"),
                       ("email", _send_email, ""),
                       ("txt", _send_txt, ""),
@@ -223,7 +234,7 @@ def _listen_IRC():
                 for service in SERVICE_TUPLE_LIST:
                     command, function, parameter = service
                     if command_parts[0] == command:
-                        function(reply_to, parameter if parameter else command_str.replace(command, "", 1))
+                        function(reply_to, parameter if parameter else command_str.replace(command, "", 1).strip())
             except:
                 pass
 
