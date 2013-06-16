@@ -88,9 +88,18 @@ def repeat_message(channel, message=None, repeat_time=3, interval=0, start_immed
         send_message(channel, message)
         time.sleep(interval)
 
+def echo(msg_str):
+    """echo whatever in the msg part to the specified channel or user"""
+    channel_str = msg_str.split()[0]
+    channel = channel_str.replace(":","")
+    msg = msg_str.replace(channel, "", 1)
+    send_message(channel, msg)
+    
 # service list. Before DB is introduced here.
 SERVICE_TUPLE_LIST = (
                       ("lunchdoc", send_message, "Narberth Lunch Doc: http://goo.gl/vs8RB"),
+                      ("issuedoc", send_message, "Jamie Xu(eytoss) Issue Doc: http://goo.gl/kgndi"),
+                      ("help", send_message, "!txt [msg]    !lunchdoc    !repeat [msg]    !echo [channel|nick] [msg]"),
                       ("email", _send_email, ""),
                       ("txt", _send_txt, ""),
                       ("google", send_message, "http://www.google.com"),
@@ -147,7 +156,7 @@ def _keyword_react(channel, message):
             return
     for keyword in settings.LISTEN_KEYWORDS:
         if keyword in message:
-            send_message(channel, "What's up!")
+            send_message(channel, "YES Sir! Check out my service list: {command_prefix} help".format(command_prefix=settings.COMMAND_PREFIX))
             
 def _ping_pong(line):
     """PONG message back upon receiving PING"""
@@ -206,6 +215,9 @@ def _listen_IRC():
             if command_parts[0] == settings.QUIT_COMMAND:
                 _quit_goobo(reply_to)
                 stop_goobo = True
+                break
+            if command_parts[0] == "echo":
+                echo(command_str.replace("echo", "", 1))
                 break
             try:
                 for service in SERVICE_TUPLE_LIST:
