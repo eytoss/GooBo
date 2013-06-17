@@ -5,6 +5,7 @@ from main.models import Jiyi
 
 # global socket variable
 s = None
+CP = settings.COMMAND_PREFIX
 
 def _send_email(reply_to, message):
     """send email functionality"""
@@ -102,6 +103,11 @@ def hint(reply_to, command_str):
         Given a hint, return the mapping message in Jiyi model
         If --add is provided, then create the message for the hint.
     """
+    # usage note.
+    print "s{}s".format(command_str)
+    if not command_str:
+        send_message(reply_to, "{}hint <hint> For example: {}hint lunchdoc.".format(settings.COMMAND_PREFIX, settings.COMMAND_PREFIX))
+        return
     # add hint
     if command_str.startswith("--add "):
         hint_and_message = command_str.replace("--add ", "", 1)
@@ -125,13 +131,10 @@ def hint(reply_to, command_str):
 
 # service list. Before DB is introduced here.
 SERVICE_TUPLE_LIST = (
-                      ("lunchdoc", send_message, "Narberth Lunch Doc: http://goo.gl/vs8RB"),
-                      ("issuedoc", send_message, "Jamie Xu(eytoss) Issue Doc: http://goo.gl/kgndi"),
+                      ("help", send_message, "Command List: {}hint {}txt {}email".format(CP, CP, CP)),
                       ("hint", hint, ""),
-                      ("help", send_message, "!txt [msg]    !lunchdoc    !repeat [msg]    !echo [channel|nick] [msg]"),
-                      ("email", _send_email, ""),
                       ("txt", _send_txt, ""),
-                      ("google", send_message, "http://www.google.com"),
+                      ("email", _send_email, ""),
                       ("repeat", repeat_message, ""),
                       ("GH", generate_GH_url, ""),
                      )
