@@ -1,5 +1,5 @@
 """
-hint.py - Hint Module
+github.py
 """
 from django.conf import settings
 from main.bot import send_message

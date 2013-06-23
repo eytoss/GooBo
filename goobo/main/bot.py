@@ -67,14 +67,6 @@ def repeat_message(channel, message=None, repeat_time=3,
         time.sleep(interval)
 
 
-def echo(msg_str):
-    """echo whatever in the msg part to the specified channel or user"""
-    channel_str = msg_str.split()[0]
-    channel = channel_str.replace(":", "", 1)
-    msg = msg_str.replace(channel, "", 1)
-    send_message(channel, msg)
-
-
 def _set_up_goobo():
     """
         Initialize goobo for all the channels
@@ -209,6 +201,7 @@ def _listen_IRC():
                 stop_goobo = True
                 break
             if command_parts[0] == "echo":
+                from main.echo import echo
                 echo(command_str.replace("echo", "", 1))
                 break
             try:

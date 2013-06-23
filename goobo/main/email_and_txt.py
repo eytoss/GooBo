@@ -1,5 +1,5 @@
 """
-hint.py - Hint Module
+email and txt
 """
 from django.conf import settings
 
