@@ -3,8 +3,6 @@ import string
 import threading
 import time
 from django.conf import settings
-from django.db import IntegrityError
-from main.models import Jiyi
 
 # global socket variable
 s = None
@@ -117,56 +115,6 @@ def echo(msg_str):
     send_message(channel, msg)
 
 
-def hint(reply_to, command_str):
-    """
-        Given a hint, return the mapping message in Jiyi model
-        If --add is provided, then create the message for the hint.
-    """
-    # usage note.
-    print "s{}s".format(command_str)
-    if not command_str:
-        send_message(reply_to, "{}hint <hint> For example: {}hint lunchdoc."
-                     .format(settings.COMMAND_PREFIX, settings.COMMAND_PREFIX))
-        return
-    # add hint
-    if command_str.startswith("--add "):
-        hint_and_message = command_str.replace("--add ", "", 1)
-        jiyi = Jiyi()
-        hint = hint_and_message.split()[0]
-        jiyi.hint = hint
-        jiyi.message = hint_and_message.replace(hint, "", 1).strip()
-        try:
-            jiyi.save()
-            send_message(reply_to, "Hint '{}' has been created. \
-                        To check message: {}hint {}"
-                         .format(hint, settings.COMMAND_PREFIX, hint))
-        except IntegrityError:
-            send_message(reply_to, "Hint '{}' has already exist, \
-                        please be creative. \
-                        Use {}hint {} to check the message out."
-                         .format(hint, settings.COMMAND_PREFIX, hint))
-        return
-    # query hint
-    hint = command_str
-    try:
-        msg = Jiyi.objects.get(hint=hint)
-    except Jiyi.DoesNotExist:
-        send_message(reply_to, "No such hint, to add: {}hint --add {} <msg>"
-                     .format(settings.COMMAND_PREFIX, hint))
-    send_message(reply_to, msg.message)
-
-# service list. Before DB is introduced here.
-SERVICE_LIST = (
-    ("help", send_message, "Command List: \
-        {}hint {}txt {}email".format(CP, CP, CP)),
-    ("hint", hint, ""),
-    ("txt", _send_txt, ""),
-    ("email", _send_email, ""),
-    ("repeat", repeat_message, ""),
-    ("GH", generate_GH_url, ""),
-)
-
-
 def _set_up_goobo():
     """
         Initialize goobo for all the channels
@@ -249,6 +197,18 @@ def _listen_IRC():
     """
         make GooBo keep listening on IRC
     """
+    # service list. Before DB is introduced here.
+    from main.hint import hint
+    SERVICE_LIST = (
+        ("help", send_message, "Command List: \
+            {}hint {}txt {}email".format(CP, CP, CP)),
+        ("hint", hint, ""),
+        ("txt", _send_txt, ""),
+        ("email", _send_email, ""),
+        ("repeat", repeat_message, ""),
+        ("GH", generate_GH_url, ""),
+    )
+
     _set_up_goobo()
 
     global stop_goobo
