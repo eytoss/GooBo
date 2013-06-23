@@ -55,18 +55,6 @@ def send_message(recipient, message):
     s.send('PRIVMSG %s :%s\r\n' % (recipient, message))
 
 
-def repeat_message(channel, message=None, repeat_time=3,
-                   interval=0, start_immediately=True):
-    """
-        Repeat message for certain times with intervals
-    """
-    for i in range(0, repeat_time):
-        if not start_immediately:
-            time.sleep(interval)
-        send_message(channel, message)
-        time.sleep(interval)
-
-
 def _set_up_goobo():
     """
         Initialize goobo for all the channels
@@ -112,20 +100,6 @@ def _tear_down_goobo():
     pass
 
 
-def _keyword_react(channel, message):
-    """
-        react upon listened any keywords in LISTEN_KEYWORDS
-    """
-    for name in settings.AUTO_REPLY_KEYWORDS:
-        if name in message:
-            send_message(channel, "{name} is currently not available."
-                         .format(name=name))
-            return
-    for keyword in settings.LISTEN_KEYWORDS:
-        if keyword in message:
-            send_message(channel, "Command List: {}help".format(CP))
-
-
 def _ping_pong(line):
     """PONG message back upon receiving PING"""
     #  Ping message sent by server irc.funet.fi example:
@@ -153,13 +127,14 @@ def _listen_IRC():
     from main.hint import hint
     from main.email_and_txt import send_txt, send_email
     from main.github import generate_GH_url
+    from main.repeat import repeat
     SERVICE_LIST = (
         ("help", send_message, "Command List: \
             {}hint {}txt {}email".format(CP, CP, CP)),
         ("hint", hint, ""),
         ("txt", send_txt, ""),
         ("email", send_email, ""),
-        ("repeat", repeat_message, ""),
+        ("repeat", repeat, ""),
         ("GH", generate_GH_url, ""),
     )
 
@@ -182,7 +157,8 @@ def _listen_IRC():
                 continue
 
             if _is_channel(recipient) and not message.startswith(CP):
-                _keyword_react(recipient, message)
+                from main.auto_reply import keyword_react
+                keyword_react(recipient, message)
                 continue
 
             # channel message started with GooBo: or private message to GooBo.
