@@ -47,12 +47,6 @@ def _parse_command(message):
     return message.split()
 
 
-def generate_GH_url(issue_id, repo="www"):
-    """"""
-    return "https://github.com/DramaFever/{repo}/issues/{issue_id}" \
-        .format(issue_id=issue_id, repo=repo)
-
-
 def send_message(recipient, message):
     """
         Sends a one line message to channel/nick in IRC
@@ -166,6 +160,7 @@ def _listen_IRC():
     # service list. Before DB is introduced here.
     from main.hint import hint
     from main.email_and_txt import send_txt, send_email
+    from main.github import generate_GH_url
     SERVICE_LIST = (
         ("help", send_message, "Command List: \
             {}hint {}txt {}email".format(CP, CP, CP)),
