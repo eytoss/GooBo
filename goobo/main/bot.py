@@ -119,21 +119,6 @@ def _listen_IRC():
     """
         make GooBo keep listening on IRC
     """
-    # service list. Before DB is introduced here.
-    from main.hint import hint
-    from main.email_and_txt import send_txt, send_email
-    from main.github import generate_GH_url
-    from main.repeat import repeat
-    SERVICE_LIST = (
-        ("help", send_message, "Command List: \
-            {}hint {}txt {}email".format(CP, CP, CP)),
-        ("hint", hint, ""),
-        ("txt", send_txt, ""),
-        ("email", send_email, ""),
-        ("repeat", repeat, ""),
-        ("GH", generate_GH_url, ""),
-    )
-
     _set_up_goobo()
 
     global stop_goobo
@@ -177,15 +162,39 @@ def _listen_IRC():
                 echo(command_str.replace("echo", "", 1))
                 break
             try:
-                for service in SERVICE_LIST:
-                    command, function, parameter = service
-                    if command_parts[0] == command:
-                        function(reply_to, parameter if parameter else
-                                 command_str.replace(command, "", 1).strip())
+                _dispatch(reply_to, command_str)
             except:
                 pass
 
     _tear_down_goobo()
+
+
+def _dispatch(reply_to, command_str):
+    """
+        dispatch to corresponding callable
+    """
+    # service list. Before DB is introduced here.
+    from main.hint import hint
+    from main.email_and_txt import send_txt, send_email
+    from main.github import generate_GH_url
+    from main.repeat import repeat
+    SERVICE_LIST = (
+        ("help", send_message, "Command List: \
+            {}hint {}txt {}email".format(CP, CP, CP)),
+        ("hint", hint, ""),
+        ("txt", send_txt, ""),
+        ("email", send_email, ""),
+        ("repeat", repeat, ""),
+        ("GH", generate_GH_url, ""),
+    )
+
+    command_parts = command_str.split()
+    for service in SERVICE_LIST:
+        command, function, parameter = service
+        if command_parts[0] == command:
+            function(reply_to, parameter if parameter else
+                     command_str.replace(command, "", 1).strip())
+
 
 if __name__ == "__main__":
     start_goobo()
