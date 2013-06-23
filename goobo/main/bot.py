@@ -280,7 +280,7 @@ def _listen_IRC():
             command_str = message.replace(settings.COMMAND_PREFIX, "", 1)
             command_parts = command_str.split()
             if not command_parts:
-                send_message(channel, "Command List: {}help".format(CP))
+                send_message(recipient, "Command List: {}help".format(CP))
                 continue
             if command_parts[0] == settings.QUIT_COMMAND:
                 _quit_goobo(reply_to)
