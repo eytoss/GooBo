@@ -25,3 +25,5 @@ def generate_GH_url(reply_to, command_str):
         user = command_parts[2]
     send_message(reply_to, "https://github.com/{user}/{repo}/issues/{issue_id}"
                  .format(issue_id=issue_id, repo=repo, user=user))
+
+generate_GH_url.command = "GH"

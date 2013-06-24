@@ -27,3 +27,5 @@ def repeat(channel, command_str):
             time.sleep(interval)
         send_message(channel, message)
         time.sleep(interval)
+
+repeat.command = "repeat"

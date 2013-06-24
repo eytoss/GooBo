@@ -1,3 +1,5 @@
+import imp
+import os
 import socket
 import string
 import threading
@@ -47,6 +49,8 @@ def _set_up_goobo():
     """
         Initialize goobo for all the channels
     """
+    _load_modules()
+
     global s
     global stop_goobo
     s = socket.socket()
@@ -173,27 +177,61 @@ def _dispatch(reply_to, command_str):
     """
         dispatch to corresponding callable
     """
-    # service list. Before DB is introduced here.
-    from main.hint import hint
-    from main.email_and_txt import send_txt, send_email
-    from main.github import generate_GH_url
-    from main.repeat import repeat
-    SERVICE_LIST = (
-        ("help", send_message, "Command List: \
-            {}hint {}txt {}email".format(CP, CP, CP)),
-        ("hint", hint, ""),
-        ("txt", send_txt, ""),
-        ("email", send_email, ""),
-        ("repeat", repeat, ""),
-        ("GH", generate_GH_url, ""),
-    )
-
     command_parts = command_str.split()
-    for service in SERVICE_LIST:
-        command, function, parameter = service
-        if command_parts[0] == command:
-            function(reply_to, parameter if parameter else
-                     command_str.replace(command, "", 1).strip())
+    command = command_parts[0]
+    if command in service_list:
+        command_params = command_str.replace(command, "", 1).strip()
+        service_list[command](reply_to, command_params)
+
+
+# supporting dynamically module loading
+files = {}
+modules = []
+service_list = {}
+
+
+def _get_files():
+    """
+        find all the files
+    """
+    # First, add modules from the regular modules directory
+    this_dir = os.path.dirname(os.path.abspath(__file__))
+    for fn in os.listdir(this_dir):
+        if fn.endswith('.py') and not fn.startswith('_'):
+            files[fn[:-3]] = os.path.join(this_dir, fn)
+
+
+def _load_modules():
+    """
+        load all the modules
+    """
+    _get_files()
+    for name, filename in files.iteritems():
+        try:
+            module = imp.load_source(name, filename)
+            _register(vars(module))
+            modules.append(name)
+        except Exception:
+            pass
+
+
+def _register(variables):
+    """
+        register all the callables from all the modules
+    """
+    for obj in variables.itervalues():
+        if _is_callable(obj):
+            service_list[obj.command] = obj
+
+
+def _is_callable(obj):
+    """Return true if object is a goobo callable.
+    """
+    if not callable(obj):
+        return False
+    if hasattr(obj, 'command'):
+        return True
+    return False
 
 
 if __name__ == "__main__":

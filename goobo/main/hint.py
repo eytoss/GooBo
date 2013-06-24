@@ -44,3 +44,5 @@ def hint(reply_to, command_str):
         send_message(reply_to, "No such hint, to add: {}hint --add {} <msg>"
                      .format(settings.COMMAND_PREFIX, hint))
     send_message(reply_to, msg.message)
+
+hint.command = "hint"
