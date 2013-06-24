@@ -1,10 +1,12 @@
 """
 repeat.py
 """
-import  time
+import time
 from main.bot import send_message
+from main.module import command
 
 
+@command("repeat")
 def repeat(channel, command_str):
     """
         Repeat message for certain times with intervals

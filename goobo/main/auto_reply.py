@@ -16,4 +16,5 @@ def keyword_react(channel, message):
             return
     for keyword in settings.LISTEN_KEYWORDS:
         if keyword in message:
-            send_message(channel, "Command List: {}help".format(settings.COMMAND_PREFIX))
+            send_message(channel, "Command List: {}help".
+                         format(settings.COMMAND_PREFIX))
