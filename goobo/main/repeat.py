@@ -1,7 +1,7 @@
 """
 repeat.py
 """
-import  time
+import time
 from main.bot import send_message
 
 
