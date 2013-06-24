@@ -3,8 +3,10 @@ github.py
 """
 from django.conf import settings
 from main.bot import send_message
+from main.module import command
 
 
+@command("GH")
 def generate_GH_url(reply_to, command_str):
     """
         generate corresponding issue/pull request urls
@@ -25,5 +27,3 @@ def generate_GH_url(reply_to, command_str):
         user = command_parts[2]
     send_message(reply_to, "https://github.com/{user}/{repo}/issues/{issue_id}"
                  .format(issue_id=issue_id, repo=repo, user=user))
-
-generate_GH_url.command = "GH"

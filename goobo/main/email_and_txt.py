@@ -2,20 +2,19 @@
 email and txt
 """
 from django.conf import settings
+from main.module import command
 
 
+@command("email")
 def send_email(reply_to, message):
     """send email functionality"""
     _send_email_or_txt(reply_to, message, is_txt=0)
 
-send_email.command = "email"
 
-
+@command("txt")
 def send_txt(reply_to, message):
     """send txt functionality"""
     _send_email_or_txt(reply_to, message, is_txt=1)
-
-send_txt.command = "txt"
 
 
 def _send_email_or_txt(reply_to, message, is_txt=1):

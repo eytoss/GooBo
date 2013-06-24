@@ -4,9 +4,11 @@ hint.py - Hint Module
 from django.conf import settings
 from django.db import IntegrityError
 from main.bot import send_message
+from main.module import command
 from main.models import Jiyi
 
 
+@command("hint")
 def hint(reply_to, command_str):
     """
         Given a hint, return the mapping message in Jiyi model
@@ -44,5 +46,3 @@ def hint(reply_to, command_str):
         send_message(reply_to, "No such hint, to add: {}hint --add {} <msg>"
                      .format(settings.COMMAND_PREFIX, hint))
     send_message(reply_to, msg.message)
-
-hint.command = "hint"

@@ -3,8 +3,10 @@ repeat.py
 """
 import time
 from main.bot import send_message
+from main.module import command
 
 
+@command("repeat")
 def repeat(channel, command_str):
     """
         Repeat message for certain times with intervals
@@ -27,5 +29,3 @@ def repeat(channel, command_str):
             time.sleep(interval)
         send_message(channel, message)
         time.sleep(interval)
-
-repeat.command = "repeat"

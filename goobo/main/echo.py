@@ -10,5 +10,3 @@ def echo(msg_str):
     channel = channel_str.replace(":", "", 1)
     msg = msg_str.replace(channel, "", 1)
     send_message(channel, msg)
-
-echo.command = "echo"
