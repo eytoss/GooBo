@@ -20,5 +20,6 @@ def goobo_start(request):
     """
         start GooBo!!!
     """
-    bot.start_goobo()
+    goobo = bot.GooBo()
+    goobo.start_goobo()
     return HttpResponse("abcde")
