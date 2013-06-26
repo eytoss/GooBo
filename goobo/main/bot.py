@@ -78,9 +78,9 @@ class GooBo():
         """
             quit goobo
         """
-        send_message(channel, "Who dare to kill me?")
+        self.send_message(channel, "Who dare to kill me?")
         time.sleep(2)
-        send_message(channel, "Well, who dares wins.")
+        self.send_message(channel, "Well, who dares wins.")
         time.sleep(1)
         s.close()
     
@@ -142,7 +142,7 @@ class GooBo():
     
                 if self._is_channel(recipient) and not message.startswith(CP):
                     from main.auto_reply import keyword_react
-                    keyword_react(GooBo(), recipient, message)
+                    keyword_react(self, recipient, message)
                     continue
     
                 # channel message started with GooBo: or private message to GooBo.
@@ -154,7 +154,7 @@ class GooBo():
                 command_str = message.replace(settings.COMMAND_PREFIX, "", 1)
                 command_parts = command_str.split()
                 if not command_parts:
-                    send_message(recipient, "Command List: {}help".format(CP))
+                    self.send_message(recipient, "Command List: {}help".format(CP))
                     continue
                 if command_parts[0] == settings.QUIT_COMMAND:
                     self._quit_goobo(reply_to)
@@ -162,7 +162,7 @@ class GooBo():
                     break
                 if command_parts[0] == "echo":
                     from main.echo import echo
-                    echo(command_str.replace("echo", "", 1))
+                    echo(self, command_str.replace("echo", "", 1))
                     break
                 try:
                     self._dispatch(reply_to, command_str)
@@ -180,7 +180,8 @@ class GooBo():
         command = command_parts[0]
         if command in self.service_list:
             command_params = command_str.replace(command, "", 1).strip()
-            self.service_list[command](reply_to, command_params)
+            # note: pass self as GooBo instance to modularized feature
+            self.service_list[command](self, reply_to, command_params)
     
     
     # supporting dynamically module loading

@@ -8,7 +8,7 @@ CP = settings.COMMAND_PREFIX
 
 
 @command("help")
-def help(reply_to, command_str):
+def help(goobo, reply_to, command_str):
     """
         help messaging if invalid command is received.
     """
