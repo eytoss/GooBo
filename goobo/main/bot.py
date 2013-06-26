@@ -76,7 +76,7 @@ class GooBo():
             time.sleep(1)
             s.send('JOIN #%s\r\n' % channel)
 
-    def _quit_goobo(self, channel):
+    def quit_goobo(self, channel):
         """
             quit goobo
         """
@@ -155,7 +155,7 @@ class GooBo():
                     self.say(recipient, "Command list: {}help".format(CP))
                     continue
                 if command_parts[0] == settings.QUIT_COMMAND:
-                    self._quit_goobo(reply_to)
+                    self.quit_goobo(reply_to)
                     stop_goobo = True
                     break
                 if command_parts[0] == "help":

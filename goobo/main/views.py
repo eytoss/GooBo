@@ -25,6 +25,23 @@ def goobo_start(request):
     return HttpResponse("abcde")
 
 
+def goobo_restart(request):
+    """
+        restart GooBo!!!
+    """
+    goobo.quit_goobo("#goobo")
+    goobo.start_goobo()
+    return HttpResponse("abcde")
+
+
+def goobo_quit(request):
+    """
+        quit GooBo!!!
+    """
+    goobo.quit_goobo("#goobo")
+    return HttpResponse("abcde")
+
+
 def goobo_say(request):
     """
         call say() directly from web page

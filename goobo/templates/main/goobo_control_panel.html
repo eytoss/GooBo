@@ -3,12 +3,42 @@
   <head>
     <title>GooBo Control Panel</title>
     <script type="text/javascript" src="../static/js/jquery-1.7.2.js"></script>
+	<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+	<link href="../static/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<script type="text/javascript">
 		function start_goobo(){
 	        $.ajax({
 	            url: "/goobo/start/",
 	            type:"GET",
 	            data:{start: "start"},
+	            cache:false,
+	            success:function(response){
+	                //alert(response);
+	            },
+	            error:function(xhr,status,err){
+	                alert(err);                    
+	            }
+	        });
+		}
+		function restart_goobo(){
+	        $.ajax({
+	            url: "/goobo/restart/",
+	            type:"GET",
+	            data:{start: "restart"},
+	            cache:false,
+	            success:function(response){
+	                //alert(response);
+	            },
+	            error:function(xhr,status,err){
+	                alert(err);                    
+	            }
+	        });
+		}
+		function quit_goobo(){
+	        $.ajax({
+	            url: "/goobo/quit/",
+	            type:"GET",
+	            data:{start: "quit"},
 	            cache:false,
 	            success:function(response){
 	                //alert(response);
@@ -34,10 +64,18 @@
 		}
 	</script>  
 </head>
-  <body>
-    <a onclick="start_goobo();">Start GooBo</a>
-	Reply To:<input type="text" id="reply_to"/>
-	Message:<input type="text" id="message"/>
-    <a onclick="say();">Send</a>
-  </body>
+<body>
+	<div class="row">
+		<div class="span4">
+			Reply To:<input type="text" id="reply_to"/>
+			Message:<input type="text" id="message"/>
+			<a onclick="say();" class="btn btn-info btn-block">Send</a>
+		</div>
+		<div class="span3 offset4">
+			<a onclick="start_goobo();" class="btn btn-success">Start GooBo</a>
+			<a onclick="restart_goobo();" class="btn btn-warning">ReStart GooBo</a>
+			<a onclick="quit_goobo();" class="btn btn-danger">Quit GooBo</a>
+		</div>
+	</div>
+</body>
 </html>
