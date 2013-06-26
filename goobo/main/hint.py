@@ -14,7 +14,6 @@ def hint(goobo, reply_to, command_str):
         If --add is provided, then create the message for the hint.
     """
     # usage note.
-    print "s{}s".format(command_str)
     if not command_str:
         goobo.send_message(reply_to, "{}hint <hint> For example: {}hint lunchdoc."
                      .format(settings.COMMAND_PREFIX, settings.COMMAND_PREFIX))

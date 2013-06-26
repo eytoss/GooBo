@@ -160,6 +160,12 @@ class GooBo():
                     self._quit_goobo(reply_to)
                     stop_goobo = True
                     break
+                if command_parts[0] == "help":
+                    help_str = ""
+                    for command in self.service_list:
+                        help_str += "{}{}\t".format(CP, command)
+                    self.send_message(reply_to, help_str)
+                    break
                 if command_parts[0] == "echo":
                     from main.echo import echo
                     echo(self, command_str.replace("echo", "", 1))
