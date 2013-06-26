@@ -1,11 +1,16 @@
 """
 echo.py
 """
+from main.module import command
 
 
-def echo(goobo, msg_str):
-    """echo whatever in the msg part to the specified channel or user"""
-    channel_str = msg_str.split()[0]
-    channel = channel_str.replace(":", "", 1)
-    msg = msg_str.replace(channel, "", 1)
-    goobo.send_message(channel, msg)
+@command("echo")
+def echo(goobo, reply_to, command_str):
+    """
+        echo whatever in the msg part to the specified channel or user
+        NOTE: reply_to here need to be overridden
+    """
+    channel_str = command_str.split()[0]
+    reply_to = channel_str.replace(":", "", 1)
+    msg = command_str.replace(reply_to, "", 1)
+    goobo.send_message(reply_to, msg)

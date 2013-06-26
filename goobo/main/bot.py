@@ -163,10 +163,6 @@ class GooBo():
                 if command_parts[0] == "help":
                     self.send_message(reply_to, self.get_command_list_info())
                     break
-                if command_parts[0] == "echo":
-                    from main.echo import echo
-                    echo(self, command_str.replace("echo", "", 1))
-                    break
                 try:
                     self._dispatch(reply_to, command_str)
                 except:
