@@ -15,11 +15,38 @@ def goobo_control_panel(request):
                               },
                               context_instance=RequestContext(request))
 
+goobo = bot.GooBo()
 
 def goobo_start(request):
     """
         start GooBo!!!
     """
-    goobo = bot.GooBo()
     goobo.start_goobo()
+    return HttpResponse("abcde")
+
+
+def goobo_restart(request):
+    """
+        restart GooBo!!!
+    """
+    goobo.quit_goobo("#goobo")
+    goobo.start_goobo()
+    return HttpResponse("abcde")
+
+
+def goobo_quit(request):
+    """
+        quit GooBo!!!
+    """
+    goobo.quit_goobo("#goobo")
+    return HttpResponse("abcde")
+
+
+def goobo_say(request):
+    """
+        call say() directly from web page
+    """
+    reply_to = request.GET.get("reply_to", "#goobo")
+    message = request.GET.get("message", "")
+    goobo.say(reply_to, message)
     return HttpResponse("abcde")
