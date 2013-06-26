@@ -18,7 +18,7 @@ class GooBo():
     modules = []
     service_list = {}
 
-    def send_message(self, recipient, message):
+    def say(self, recipient, message):
         """
             Sends a one line message to channel/nick in IRC
         """
@@ -80,9 +80,9 @@ class GooBo():
         """
             quit goobo
         """
-        self.send_message(channel, "Who dare to kill me?")
+        self.say(channel, "Who dare to kill me?")
         time.sleep(2)
-        self.send_message(channel, "Well, who dares wins.")
+        self.say(channel, "Well, who dares wins.")
         time.sleep(1)
         s.close()
 
@@ -152,14 +152,14 @@ class GooBo():
                 command_parts = command_str.split()
                 # handle special cases or special commands
                 if not command_parts:
-                    self.send_message(recipient, "Command list: {}help".format(CP))
+                    self.say(recipient, "Command list: {}help".format(CP))
                     continue
                 if command_parts[0] == settings.QUIT_COMMAND:
                     self._quit_goobo(reply_to)
                     stop_goobo = True
                     break
                 if command_parts[0] == "help":
-                    self.send_message(reply_to, self.get_command_list_info())
+                    self.say(reply_to, self.get_command_list_info())
                     break
 
                 # pass to modularized commands

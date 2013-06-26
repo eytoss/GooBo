@@ -10,10 +10,10 @@ def keyword_react(goobo, channel, message):
     """
     for name in settings.AUTO_REPLY_KEYWORDS:
         if name in message:
-            goobo.send_message(channel, "{name} is currently not available."
+            goobo.say(channel, "{name} is currently not available."
                          .format(name=name))
             return
     for keyword in settings.LISTEN_KEYWORDS:
         if keyword in message:
-            goobo.send_message(channel, "Command List: {}help".
+            goobo.say(channel, "Command List: {}help".
                          format(settings.COMMAND_PREFIX))

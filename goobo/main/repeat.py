@@ -26,5 +26,5 @@ def repeat(goobo, channel, command_str):
     for i in range(0, repeat_time):
         if start_immediately != 1:
             time.sleep(interval)
-        goobo.send_message(channel, message)
+        goobo.say(channel, message)
         time.sleep(interval)

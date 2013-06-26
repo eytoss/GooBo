@@ -13,4 +13,4 @@ def echo(goobo, reply_to, command_str):
     channel_str = command_str.split()[0]
     reply_to = channel_str.replace(":", "", 1)
     msg = command_str.replace(reply_to, "", 1)
-    goobo.send_message(reply_to, msg)
+    goobo.say(reply_to, msg)
