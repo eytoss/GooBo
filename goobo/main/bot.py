@@ -154,17 +154,14 @@ class GooBo():
                 command_str = message.replace(settings.COMMAND_PREFIX, "", 1)
                 command_parts = command_str.split()
                 if not command_parts:
-                    self.send_message(recipient, "Command List: {}help".format(CP))
+                    self.send_message(recipient, "Check Command List: {}help".format(CP))
                     continue
                 if command_parts[0] == settings.QUIT_COMMAND:
                     self._quit_goobo(reply_to)
                     stop_goobo = True
                     break
                 if command_parts[0] == "help":
-                    help_str = ""
-                    for command in self.service_list:
-                        help_str += "{}{}\t".format(CP, command)
-                    self.send_message(reply_to, help_str)
+                    self.send_message(reply_to, self.get_command_list_info())
                     break
                 if command_parts[0] == "echo":
                     from main.echo import echo
@@ -177,7 +174,16 @@ class GooBo():
     
         self._tear_down_goobo()
     
-    
+    def get_command_list_info(self):
+        """
+            Get a list of commands supported by GooBo
+        """
+        cmd_list_str = ""
+        for command in self.service_list:
+            cmd_list_str += "{}{}\t".format(CP, command)
+        return cmd_list_str
+
+
     def _dispatch(self, reply_to, command_str):
         """
             dispatch to corresponding callable
