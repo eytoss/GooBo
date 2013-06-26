@@ -165,7 +165,7 @@ CHANNEL_LIST = ["jamie-test", "goobo"]
 LISTEN_KEYWORDS = ["you", "never", "know"]
 AUTO_REPLY_KEYWORDS = ["keep", "guessing"]
 # command prefix used to have GooBo's attention!
-COMMAND_PREFIX = "!"
+COMMAND_PREFIX = "."
 QUIT_COMMAND = "!quit"
 MESSAGE_DELAY_TIME = 0.1
 

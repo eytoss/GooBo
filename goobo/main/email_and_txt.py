@@ -6,18 +6,18 @@ from main.module import command
 
 
 @command("email")
-def send_email(reply_to, message):
+def send_email(goobo, reply_to, message):
     """send email functionality"""
-    _send_email_or_txt(reply_to, message, is_txt=0)
+    _send_email_or_txt(goobo, reply_to, message, is_txt=0)
 
 
 @command("txt")
-def send_txt(reply_to, message):
+def send_txt(goobo, reply_to, message):
     """send txt functionality"""
-    _send_email_or_txt(reply_to, message, is_txt=1)
+    _send_email_or_txt(goobo, reply_to, message, is_txt=1)
 
 
-def _send_email_or_txt(reply_to, message, is_txt=1):
+def _send_email_or_txt(goobo, reply_to, message, is_txt=1):
     """send_email functionality"""
     # Import smtplib for the actual sending function
     import smtplib

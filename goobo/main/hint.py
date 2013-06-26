@@ -3,21 +3,19 @@ hint.py - Hint Module
 """
 from django.conf import settings
 from django.db import IntegrityError
-from main.bot import send_message
 from main.module import command
 from main.models import Jiyi
 
 
 @command("hint")
-def hint(reply_to, command_str):
+def hint(goobo, reply_to, command_str):
     """
         Given a hint, return the mapping message in Jiyi model
         If --add is provided, then create the message for the hint.
     """
     # usage note.
-    print "s{}s".format(command_str)
     if not command_str:
-        send_message(reply_to, "{}hint <hint> For example: {}hint lunchdoc."
+        goobo.say(reply_to, "{}hint <hint> For example: {}hint lunchdoc."
                      .format(settings.COMMAND_PREFIX, settings.COMMAND_PREFIX))
         return
     # add hint
@@ -29,11 +27,11 @@ def hint(reply_to, command_str):
         jiyi.message = hint_and_message.replace(hint, "", 1).strip()
         try:
             jiyi.save()
-            send_message(reply_to, "Hint '{}' has been created. \
+            goobo.say(reply_to, "Hint '{}' has been created. \
                         To check message: {}hint {}"
                          .format(hint, settings.COMMAND_PREFIX, hint))
         except IntegrityError:
-            send_message(reply_to, "Hint '{}' has already exist, \
+            goobo.say(reply_to, "Hint '{}' has already exist, \
                         please be creative. \
                         Use {}hint {} to check the message out."
                          .format(hint, settings.COMMAND_PREFIX, hint))
@@ -43,6 +41,6 @@ def hint(reply_to, command_str):
     try:
         msg = Jiyi.objects.get(hint=hint)
     except Jiyi.DoesNotExist:
-        send_message(reply_to, "No such hint, to add: {}hint --add {} <msg>"
+        goobo.say(reply_to, "No such hint, to add: {}hint --add {} <msg>"
                      .format(settings.COMMAND_PREFIX, hint))
-    send_message(reply_to, msg.message)
+    goobo.say(reply_to, msg.message)
