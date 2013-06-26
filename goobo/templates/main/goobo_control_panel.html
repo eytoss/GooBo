@@ -1,26 +1,43 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Page title</title>
+    <title>GooBo Control Panel</title>
     <script type="text/javascript" src="../static/js/jquery-1.7.2.js"></script>
 	<script type="text/javascript">
 		function start_goobo(){
-            $.ajax({
-                url: "/goobo/start/",
-                type:"GET",
-                data:{start: "start"},
-                cache:false,
-                success:function(response){
-                    alert(response);
-                },
-                error:function(xhr,status,err){
-                    alert(err);                    
-                }
-            });
+	        $.ajax({
+	            url: "/goobo/start/",
+	            type:"GET",
+	            data:{start: "start"},
+	            cache:false,
+	            success:function(response){
+	                //alert(response);
+	            },
+	            error:function(xhr,status,err){
+	                alert(err);                    
+	            }
+	        });
+		}
+		function say(){
+	        $.ajax({
+	            url: "/goobo/say/",
+	            type:"GET",
+	            data:{"reply_to": $("#reply_to").val(), "message":$("#message").val()},
+	            cache:false,
+	            success:function(response){
+	                //alert(response);
+	            },
+	            error:function(xhr,status,err){
+	                alert(err);                    
+	            }
+	        });
 		}
 	</script>  
 </head>
   <body>
     <a onclick="start_goobo();">Start GooBo</a>
+	Reply To:<input type="text" id="reply_to"/>
+	Message:<input type="text" id="message"/>
+    <a onclick="say();">Send</a>
   </body>
 </html>
