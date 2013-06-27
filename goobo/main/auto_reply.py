@@ -38,7 +38,7 @@ def keyword_react(goobo, sender, recipient, message):
     for auto_reply in auto_replys:
         if auto_reply.keyword in message:
             now = datetime.datetime.now()
-            min_diff = get_min_diff(now, auto_reply.\
+            min_diff = get_min_diff(now, auto_reply.
                                     date_modified.astimezone(LOCAL_TZ))
             if auto_reply.count_down and min_diff < auto_reply.count_down:
                 message = auto_reply.msg_cnt_dn.\

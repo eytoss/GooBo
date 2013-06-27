@@ -35,5 +35,6 @@ class AutoReply(models.Model):
                            help_text="message after count-down")
     count_down = models.IntegerField(blank=True, null=True, help_text=
                                      "Count down time in minutes")
+    is_active = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)

@@ -28,10 +28,10 @@ admin.site.register(Record, RecordAdmin)
 class AutoReplyAdmin(admin.ModelAdmin):
     search_fields = ["keyword", "msg_cnt_dn", "msg"]
     ordering = ["keyword", ]
-    list_display = ["keyword", "msg_cnt_dn", "msg", "count_down",
-                    "date_created", "date_modified"]
+    list_display = ["keyword", "msg_cnt_dn", "msg", "is_active",
+                    "count_down", "date_created", "date_modified"]
     date_hierarchy = "date_created"
-    list_filter = ("date_created", )
+    list_filter = ("date_created", "is_active")
     readonly_fields = ("date_created", "date_modified", )
 
 admin.site.register(AutoReply, AutoReplyAdmin)
