@@ -21,3 +21,19 @@ class Record(models.Model):
     recipient = models.CharField(max_length=200)
     message = models.CharField(max_length=500)
     date_created = models.DateTimeField(auto_now_add=True)
+
+
+class AutoReply(models.Model):
+    """
+        Auto reply predefined message if keyword is detected
+    """
+    keyword = models.CharField(max_length=200, db_index=True,
+                               help_text="which will trigger auto-reply")
+    msg_cnt_dn = models.CharField(max_length=500,
+                                  help_text="message during count-down")
+    msg = models.CharField(max_length=500,
+                           help_text="message after count-down")
+    count_down = models.IntegerField(blank=True, null=True, help_text=
+                                     "Count down time in minutes")
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)

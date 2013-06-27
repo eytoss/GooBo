@@ -163,7 +163,6 @@ FREENODE_NICKNAME_PASSWORD = "set in settings_post.py"
 CHANNEL_LIST = ["jamie-test", "goobo"]
 
 LISTEN_KEYWORDS = ["you", "never", "know"]
-AUTO_REPLY_KEYWORDS = ["keep", "guessing"]
 AUTO_RECORD_KEYWORDS = ["keep", "guessing"]
 # command prefix used to have GooBo's attention!
 COMMAND_PREFIX = "."
