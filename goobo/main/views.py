@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from main import bot
+from main.models import AutoReply
 
 
 def goobo_control_panel(request):
@@ -16,6 +17,17 @@ def goobo_control_panel(request):
                               context_instance=RequestContext(request))
 
 goobo = bot.GooBo()
+
+
+def goobo_take_over(request):
+    """
+        start count down for auto-reply
+    """
+    # enable the default auto-reply
+    default_auto_reply = AutoReply.objects.get(id=1)
+    default_auto_reply.is_active = True
+    default_auto_reply.save()
+    return HttpResponse("abcde")
 
 
 def goobo_start(request):

@@ -7,6 +7,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'goobo.views.home', name='home'),
     url(r'^goobo/$', 'main.views.goobo_control_panel', name='goobo_control_panel'),
+    url(r'^goobo/take_over/$', 'main.views.goobo_take_over', name='goobo_take_over'),
     url(r'^goobo/say/$', 'main.views.goobo_say', name='goobo_say'),
     url(r'^goobo/start/$', 'main.views.goobo_start', name='goobo_start'),
     url(r'^goobo/restart/$', 'main.views.goobo_restart', name='goobo_restart'),

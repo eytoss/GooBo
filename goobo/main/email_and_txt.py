@@ -39,3 +39,4 @@ def _send_email_or_txt(goobo, reply_to, message, is_txt=1):
     s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
     s.sendmail(settings.EMAIL_FROM, [destination], msg.as_string())
     s.quit()
+    goobo.say(reply_to, "{} sent.".format("Text" if is_txt else "Email"))
