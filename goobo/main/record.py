@@ -17,7 +17,7 @@ def record(goobo, reply_to, command_str):
     """
     # usage note.
     if not command_str:
-        goobo.say(reply_to, "{}{} <keyword> For example: {}{} dev2"
+        goobo.say(reply_to, "{}{} <keyword> For example: {}{} my_nick"
                   .format(settings.COMMAND_PREFIX, CMD_STR,
                           settings.COMMAND_PREFIX, CMD_STR))
         return
