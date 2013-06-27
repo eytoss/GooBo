@@ -34,7 +34,7 @@ def keyword_react(goobo, sender, recipient, message):
         d2_ts = time.mktime(dt_2.timetuple())
         return int((d1_ts - d2_ts) / 60)
 
-    auto_replys = AutoReply.objects.all()
+    auto_replys = AutoReply.objects.filter(is_active=True)
     for auto_reply in auto_replys:
         if auto_reply.keyword in message:
             now = datetime.datetime.now()

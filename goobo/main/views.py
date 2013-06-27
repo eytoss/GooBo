@@ -21,13 +21,14 @@ goobo = bot.GooBo()
 
 def goobo_take_over(request):
     """
-        start count down for auto-reply
+        start/stop count down for auto-reply
     """
+    is_active = request.GET.get("is_active", "0")
     # enable the default auto-reply
     default_auto_reply = AutoReply.objects.get(id=1)
-    default_auto_reply.is_active = True
+    default_auto_reply.is_active = int(is_active)
     default_auto_reply.save()
-    return HttpResponse("abcde")
+    return HttpResponse(is_active)
 
 
 def goobo_start(request):
