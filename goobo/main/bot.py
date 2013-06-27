@@ -18,11 +18,11 @@ class GooBo():
     modules = []
     service_list = {}
 
-    def say(self, recipient, message):
+    def say(self, recipient, message, delay=settings.MESSAGE_DELAY_TIME):
         """
             Sends a one line message to channel/nick in IRC
         """
-        time.sleep(settings.MESSAGE_DELAY_TIME)
+        time.sleep(delay)
         s.send('PRIVMSG %s :%s\r\n' % (recipient, message))
 
     def _is_channel(self, name):
