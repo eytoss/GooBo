@@ -25,4 +25,4 @@ def generate_GH_url(goobo, reply_to, command_str):
     if len(command_parts) > 2:
         user = command_parts[2]
     goobo.say(reply_to, "https://github.com/{user}/{repo}/issues/{issue_id}"
-                 .format(issue_id=issue_id, repo=repo, user=user))
+              .format(issue_id=issue_id, repo=repo, user=user))

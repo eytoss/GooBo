@@ -16,7 +16,7 @@ def hint(goobo, reply_to, command_str):
     # usage note.
     if not command_str:
         goobo.say(reply_to, "{}hint <hint> For example: {}hint lunchdoc."
-                     .format(settings.COMMAND_PREFIX, settings.COMMAND_PREFIX))
+                  .format(settings.COMMAND_PREFIX, settings.COMMAND_PREFIX))
         return
     # add hint
     if command_str.startswith("--add "):
@@ -29,12 +29,12 @@ def hint(goobo, reply_to, command_str):
             jiyi.save()
             goobo.say(reply_to, "Hint '{}' has been created. \
                         To check message: {}hint {}"
-                         .format(hint, settings.COMMAND_PREFIX, hint))
+                      .format(hint, settings.COMMAND_PREFIX, hint))
         except IntegrityError:
             goobo.say(reply_to, "Hint '{}' has already exist, \
                         please be creative. \
                         Use {}hint {} to check the message out."
-                         .format(hint, settings.COMMAND_PREFIX, hint))
+                      .format(hint, settings.COMMAND_PREFIX, hint))
         return
     # query hint
     hint = command_str
@@ -42,5 +42,5 @@ def hint(goobo, reply_to, command_str):
         msg = Jiyi.objects.get(hint=hint)
     except Jiyi.DoesNotExist:
         goobo.say(reply_to, "No such hint, to add: {}hint --add {} <msg>"
-                     .format(settings.COMMAND_PREFIX, hint))
+                  .format(settings.COMMAND_PREFIX, hint))
     goobo.say(reply_to, msg.message)

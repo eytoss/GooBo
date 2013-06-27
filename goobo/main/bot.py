@@ -140,7 +140,7 @@ class GooBo():
 
                 if self._is_channel(recipient) and not message.startswith(CP):
                     from main.auto_reply import keyword_react
-                    keyword_react(self, recipient, message)
+                    keyword_react(self, sender, recipient, message)
                     continue
 
                 reply_to = sender

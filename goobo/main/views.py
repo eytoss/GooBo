@@ -17,6 +17,7 @@ def goobo_control_panel(request):
 
 goobo = bot.GooBo()
 
+
 def goobo_start(request):
     """
         start GooBo!!!
