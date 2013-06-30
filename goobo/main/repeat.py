@@ -2,10 +2,11 @@
 repeat.py
 """
 import time
-from main.module import command
+from main.module import command, ex
 
 
 @command("repeat")
+@ex
 def repeat(goobo, channel, command_str):
     """
         Repeat message for certain times with intervals

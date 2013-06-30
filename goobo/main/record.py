@@ -3,13 +3,14 @@ hint.py - Hint Module
 """
 import pytz
 from django.conf import settings
-from main.module import command
+from main.module import command, ex
 from main.models import Record
 
 CMD_STR = "history"
 LOCAL_TZ = pytz.timezone(settings.TIME_ZONE)
 
 
+@ex
 @command(CMD_STR)
 def record(goobo, reply_to, command_str):
     """

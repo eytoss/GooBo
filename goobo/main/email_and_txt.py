@@ -2,15 +2,17 @@
 email and txt
 """
 from django.conf import settings
-from main.module import command
+from main.module import command, ex
 
 
+@ex
 @command("email")
 def send_email(goobo, reply_to, message):
     """send email functionality"""
     _send_email_or_txt(goobo, reply_to, message, is_txt=0)
 
 
+@ex
 @command("txt")
 def send_txt(goobo, reply_to, message):
     """send txt functionality"""

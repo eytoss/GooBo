@@ -3,10 +3,10 @@ hint.py - Hint Module
 """
 from django.conf import settings
 from django.db import IntegrityError
-from main.module import command
+from main.module import command, ex
 from main.models import Jiyi
 
-
+@ex
 @command("hint")
 def hint(goobo, reply_to, command_str):
     """
