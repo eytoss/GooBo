@@ -84,7 +84,12 @@ class GooBo():
         time.sleep(2)
         self.say(channel, "Well, who dares wins.")
         time.sleep(1)
-        s.close()
+        s.send("QUIT :who dares wins\r\n")
+        # make sure connection is closed in case QUIT was not successful
+        try:
+            s.close()
+        except:
+            pass
 
     def _tear_down_goobo(self):
         """
