@@ -2,9 +2,10 @@
 github.py
 """
 from django.conf import settings
-from main.module import command
+from main.module import command, ex
 
 
+@ex
 @command("GH")
 def generate_GH_url(goobo, reply_to, command_str):
     """

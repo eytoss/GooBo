@@ -46,7 +46,7 @@ class GooBo():
             message = " ".join(parts[3:])[1:]
         except:
             return (None, None, None, None)
-        return (sender, command, recipient, message)
+        return (sender, command, recipient, message.decode('utf-8'))
 
     def _set_up_goobo(self):
         """
@@ -163,10 +163,7 @@ class GooBo():
                     break
 
                 # pass to modularized commands
-                try:
-                    self._dispatch(reply_to, command_str)
-                except:
-                    pass
+                self._dispatch(reply_to, command_str)
 
         self._tear_down_goobo()
 

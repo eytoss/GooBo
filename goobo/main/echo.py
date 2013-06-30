@@ -1,9 +1,10 @@
 """
 echo.py
 """
-from main.module import command
+from main.module import command, ex
 
 
+@ex
 @command("echo")
 def echo(goobo, reply_to, command_str):
     """

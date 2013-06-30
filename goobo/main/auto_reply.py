@@ -6,10 +6,11 @@ import pytz
 import time
 from django.conf import settings
 from main.models import AutoReply, Record
+from main.module import ex
 
 LOCAL_TZ = pytz.timezone(settings.TIME_ZONE)
 
-
+@ex
 def keyword_react(goobo, sender, recipient, message):
     """
         react upon listened any keywords in LISTEN_KEYWORDS
